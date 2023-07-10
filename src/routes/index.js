@@ -1,8 +1,22 @@
-const router = require('express').Router();
+const express = require('express');
+const TodoRoutes = require('./todoRoutes');
 
-const todos = require('./todoRoutes')
+class ApiRouter {
+  constructor(database) {
+    this.router = express.Router();
+    this.todoRoutes = new TodoRoutes(database);
 
-router.get('/', (req, res) => res.send('RestAPI'));
-router.use('/todos', todos);
+    this.router.get('/', this.handleRoot);
+    this.router.use('/todos', this.todoRoutes.getRouter());
+  }
 
-module.exports = router;
+  handleRoot(req, res) {
+    res.send('RestAPI');
+  }
+
+  getRouter() {
+    return this.router;
+  }
+}
+
+module.exports = ApiRouter;
