@@ -47,9 +47,7 @@ class TodoController {
 
   async createTodo(req, res) {
     try {
-      console.log('AQUI: ', req.body);
       const [newTodoData] = await this.db.insert(req.body).from('todo').returning('*');
-      // console.log(newTodoData);
       const newTodo = new Todo(
         newTodoData.id,
         newTodoData.title,
@@ -87,7 +85,6 @@ class TodoController {
   
   async deleteTodo(req, res) {
     try {
-
       const [deletedTodoData] = await this.db.del().where('id', req.params.id).from('todo').returning('*');
       if (deletedTodoData) {
         const deletedTodo = new Todo(
